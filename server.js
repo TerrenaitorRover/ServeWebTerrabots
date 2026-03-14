@@ -55,6 +55,21 @@ app.get("/healthz", (_req, res) => {
     });
 });
 
+// --- Debug: test SMTP connection (remove after debugging) ---
+app.get("/test-smtp", async (_req, res) => {
+    try {
+        await transporter.verify();
+        res.json({ success: true, message: "SMTP connection OK" });
+    } catch (error) {
+        res.json({
+            success: false,
+            error: error.message,
+            code: error.code,
+            command: error.command,
+        });
+    }
+});
+
 // --- Contact form endpoint ---
 app.post("/send-email", contactLimiter, async (req, res) => {
     const { email, subject, message } = req.body;
