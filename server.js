@@ -19,8 +19,18 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS,
     },
     tls: {
-        rejectUnauthorized: false, // Evita problemas de certificados SSL
+        rejectUnauthorized: false, // lo dejas como tú quieres
     },
+});
+
+// Endpoint de salud para Render/UptimeRobot
+app.get("/healthz", (req, res) => {
+    res.status(200).json({
+        ok: true,
+        service: "ServeWebTerrabots",
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+    });
 });
 
 // Endpoint para enviar correos
@@ -46,4 +56,6 @@ app.post("/send-email", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
