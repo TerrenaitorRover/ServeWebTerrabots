@@ -40,18 +40,9 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
-});
-
-// Verify SMTP connection on startup
-transporter.verify((err) => {
-    if (err) {
-        console.error("SMTP connection failed:", err.message);
-        console.error(
-            "Check EMAIL_USER and EMAIL_PASS. For Gmail, use an App Password (not your account password)."
-        );
-    } else {
-        console.log("SMTP connection verified — ready to send emails");
-    }
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
 });
 
 // --- Health check for Render / UptimeRobot ---
